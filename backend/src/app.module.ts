@@ -1,10 +1,15 @@
+import { WinstonModule } from 'nest-winston';
+
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { OnePaymentService } from './one-payment/one-payment.service';
+import { RequestDataDefaultService } from './services/request-data-default.service';
 
 @Module({
-  imports: [],
+  imports: [HttpModule, WinstonModule.forRoot({})],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [OnePaymentService, RequestDataDefaultService],
 })
 export class AppModule {}
