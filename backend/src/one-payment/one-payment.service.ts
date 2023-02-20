@@ -1,15 +1,15 @@
 import axios, { AxiosError } from 'axios';
-import { Logger } from 'winston';
+import { createLogger, format, transports } from 'winston';
 
 import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { ErrorResponse } from '../const';
 import { getMD5 } from '../hash';
 import {
   RequestBalance,
-  RequestPayoutCard,
-  RequestStatus,
+  RequestPayoutQiwi,
+  RequestStatusQiwi,
   ResponseBalance,
   ResponseError,
   ResponsePayout,
@@ -32,18 +32,25 @@ export class OnePaymentService {
 
   private apiKey = 'apiKey';
 
-  constructor(
-    private readonly httpService: HttpService,
-    @Inject('winston')
-    private readonly logger: Logger,
-  ) {}
+  private logger = createLogger({
+    level: 'info',
+    format: format.json(),
+    transports: [
+      new transports.Console({
+        level: 'info',
+        format: format.combine(format.colorize(), format.simple()),
+      }),
+    ],
+  });
+
+  constructor(private readonly httpService: HttpService) {}
 
   public setSecret(apiKey: string) {
     this.apiKey = apiKey;
   }
 
   public async payout(
-    params: RequestPayoutCard,
+    params: RequestPayoutQiwi,
   ): Promise<ResponsePayout | ErrorResponse | ResponseError> {
     try {
       const response = await this.httpService
@@ -65,7 +72,7 @@ export class OnePaymentService {
   }
 
   public async status(
-    params: RequestStatus,
+    params: RequestStatusQiwi,
   ): Promise<ResponseStatus | ErrorResponse | ResponseError> {
     try {
       const response = await this.httpService

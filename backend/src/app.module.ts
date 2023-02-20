@@ -5,11 +5,11 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { OnePaymentService } from './one-payment/one-payment.service';
-import { RequestDataDefaultService } from './services/request-data-default.service';
+import { RequestQiwiDataDefaultService } from './services/request-qiwi-data-default.service';
 
 @Module({
   imports: [HttpModule, WinstonModule.forRoot({})],
   controllers: [AppController],
-  providers: [OnePaymentService, RequestDataDefaultService],
+  providers: [OnePaymentService, RequestQiwiDataDefaultService],
 })
 export class AppModule {}

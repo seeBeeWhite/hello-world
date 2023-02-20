@@ -1,5 +1,5 @@
 <template>
-  <div class="block">
+  <div>
     <button class="uk-button" @click="sendPayout">Запрос выплаты</button>
     
     <button class="uk-button"  @click="sendStatus">Статус выплаты</button>
@@ -7,14 +7,12 @@
     <button class="uk-button"  @click="sendBallance">Проверить балланс</button>
   </div>
 
-  <div class="block">
+  <div>
     <p>Результат:</p>
-  
     
     <span v-if="isPreloaderVisible" uk-spinner></span>
     
     <span v-else>{{ message }}</span>
-    
   </div>
 </template>
 

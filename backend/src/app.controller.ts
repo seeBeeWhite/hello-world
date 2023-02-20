@@ -7,33 +7,33 @@ import {
   ResponsePayout,
 } from './one-payment/one-payment.interface';
 import { OnePaymentService } from './one-payment/one-payment.service';
-import { RequestDataDefaultService } from './services/request-data-default.service';
+import { RequestQiwiDataDefaultService } from './services/request-qiwi-data-default.service';
 
 @Controller()
 export class AppController {
   constructor(
     private onePaymentService: OnePaymentService,
-    private requestDataDefaultService: RequestDataDefaultService,
+    private requestDataDefaultService: RequestQiwiDataDefaultService,
   ) {}
 
   @Get('one-payment/payout')
   payout(): Promise<ResponsePayout | ErrorResponse | ResponseError> {
-    const requestPayoutCard = this.requestDataDefaultService.requestPayoutCard;
+    const requestPayoutQiwi = this.requestDataDefaultService.requestPayoutQiwi;
 
-    return this.onePaymentService.payout(requestPayoutCard);
+    return this.onePaymentService.payout(requestPayoutQiwi);
   }
 
   @Get('one-payment/status')
   status(): Promise<ResponsePayout | ErrorResponse | ResponseError> {
-    const requestPayoutCard = this.requestDataDefaultService.requestPayoutCard;
+    const requestStatusQiwi = this.requestDataDefaultService.requestStatusQiwi;
 
-    return this.onePaymentService.status(requestPayoutCard);
+    return this.onePaymentService.status(requestStatusQiwi);
   }
 
   @Get('one-payment/balance')
   balance(): Promise<ErrorResponse | ResponseError | ResponseBalance> {
-    const requestBalance = this.requestDataDefaultService.requestBalance;
+    const requestBalanceQiwi = this.requestDataDefaultService.requestBalance;
 
-    return this.onePaymentService.balance(requestBalance);
+    return this.onePaymentService.balance(requestBalanceQiwi);
   }
 }

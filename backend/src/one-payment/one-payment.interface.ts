@@ -38,6 +38,26 @@ export type RequestPayout = {
   sign: string;
 };
 
+export type RequestPayoutQiwi = {
+  account: string;
+  amount: string;
+  description?: string;
+  ip?: string;
+  partner_id: string;
+  payment_type: PayoutType;
+  project_id: string;
+  shop_url?: string;
+  sign: string;
+  user_data: string;
+};
+
+export type RequestStatusQiwi = {
+  partner_id: string;
+  order_id: string;
+  user_data: string;
+  sign: string;
+};
+
 export type RequestPayoutCard = RequestPayout & {
   first_name?: string;
   last_name?: string;
