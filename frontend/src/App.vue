@@ -1,91 +1,70 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
-</script>
-
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
+  <div class="block">
+    <button class="uk-button" @click="sendPayout">Запрос выплаты</button>
+    
+    <button class="uk-button"  @click="sendStatus">Статус выплаты</button>
+    
+    <button class="uk-button"  @click="sendBallance">Проверить балланс</button>
+  </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="block">
+    <p>Результат:</p>
+  
+    
+    <span v-if="isPreloaderVisible" uk-spinner></span>
+    
+    <span v-else>{{ message }}</span>
+    
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+<script lang="ts">
+export default {
+  data() {
+    return {
+      isPreloaderVisible: false,
+      message: '',
+      requestString: '',
+    }
+  },
+  methods: {
+    sendPayout() {
+      this.requestString = '/one-payment/payout'
+      this.isPreloaderVisible = true;
+      axios
+        .get(this.requestString)
+        .then(this.parseResponce)
+        .finally(() => (this.isPreloaderVisible = false));
+    },
+    sendStatus() {
+      this.requestString = '/one-payment/status'
+      this.isPreloaderVisible = true;
+      axios
+        .get(this.requestString)
+        .then(this.parseResponce)
+        .finally(() => (this.isPreloaderVisible = false));
+    },
+    sendBallance() {
+      this.requestString = '/one-payment/balance'
+      this.isPreloaderVisible = true;
+      axios
+        .get(this.requestString)
+        .then(this.parseResponce)
+        .finally(() => (this.isPreloaderVisible = false));
+    },
+    parseResponce(responce: any) {
+      this.message = responce.data;
+    }
   }
 }
+</script>
+
+<style>
+  .uk-button {
+    margin: 16px 0;
+    min-width: 220px;
+    display: block;
+  }
+  
+  
 </style>
