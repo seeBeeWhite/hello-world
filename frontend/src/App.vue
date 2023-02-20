@@ -12,7 +12,7 @@
     
     <span v-if="isPreloaderVisible" uk-spinner></span>
     
-    <span v-else>{{ message }}</span>
+    <span v-else>{{ responseText }}</span>
   </div>
 </template>
 
@@ -23,37 +23,52 @@ export default {
   data() {
     return {
       isPreloaderVisible: false,
-      message: '',
-      requestString: '',
+      responseText: "",
     }
   },
   methods: {
     sendPayout() {
-      this.requestString = "/one-payment/payout"
       this.isPreloaderVisible = true;
+      
       axios
-        .get(this.requestString)
+        .post("/one-payment/payout", {
+          account: "79251234567",
+          amount: "50",
+          description: "Тестовый платеж",
+          partner_id: "1234",
+          payment_type: "qiwi",
+          project_id: "5678",
+          sign: "d724e1e6453a43397bb2aa6d6be9cc06",
+          user_data: "1",
+        })
         .then(this.parseResponse)
         .finally(() => (this.isPreloaderVisible = false));
     },
     sendStatus() {
-      this.requestString = '/one-payment/status'
       this.isPreloaderVisible = true;
+      
       axios
-        .get(this.requestString)
+        .post("/one-payment/status", {
+          order_id: "5678",
+          partner_id: "1234",
+          sign: "d724e1e6453a43397bb2aa6d6be9cc06",
+          user_data: "1",
+        })
         .then(this.parseResponse)
         .finally(() => (this.isPreloaderVisible = false));
     },
     sendBallance() {
-      this.requestString = '/one-payment/balance'
       this.isPreloaderVisible = true;
+      
       axios
-        .get(this.requestString)
+        .post("/one-payment/balance", {
+          partner_id: "1234"
+        })
         .then(this.parseResponse)
         .finally(() => (this.isPreloaderVisible = false));
     },
     parseResponse(response: any) {
-      this.message = response.data;
+      this.responseText = response.data;
     }
   }
 }

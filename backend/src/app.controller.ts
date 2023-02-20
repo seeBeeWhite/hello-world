@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
 import { ErrorResponse } from './const';
 import {
@@ -7,33 +7,29 @@ import {
   ResponsePayout,
 } from './one-payment/one-payment.interface';
 import { OnePaymentService } from './one-payment/one-payment.service';
-import { RequestQiwiDataDefaultService } from './services/request-qiwi-data-default.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private onePaymentService: OnePaymentService,
-    private requestDataDefaultService: RequestQiwiDataDefaultService,
-  ) {}
+  constructor(private onePaymentService: OnePaymentService) {}
 
-  @Get('one-payment/payout')
-  payout(): Promise<ResponsePayout | ErrorResponse | ResponseError> {
-    const requestPayoutQiwi = this.requestDataDefaultService.requestPayoutQiwi;
-
-    return this.onePaymentService.payout(requestPayoutQiwi);
+  @Post('one-payment/payout')
+  payout(
+    @Body() body: any,
+  ): Promise<ResponsePayout | ErrorResponse | ResponseError> {
+    return this.onePaymentService.payout(body);
   }
 
-  @Get('one-payment/status')
-  status(): Promise<ResponsePayout | ErrorResponse | ResponseError> {
-    const requestStatusQiwi = this.requestDataDefaultService.requestStatusQiwi;
-
-    return this.onePaymentService.status(requestStatusQiwi);
+  @Post('one-payment/status')
+  status(
+    @Body() body: any,
+  ): Promise<ResponsePayout | ErrorResponse | ResponseError> {
+    return this.onePaymentService.status(body);
   }
 
-  @Get('one-payment/balance')
-  balance(): Promise<ErrorResponse | ResponseError | ResponseBalance> {
-    const requestBalanceQiwi = this.requestDataDefaultService.requestBalance;
-
-    return this.onePaymentService.balance(requestBalanceQiwi);
+  @Post('one-payment/balance')
+  balance(
+    @Body() body: any,
+  ): Promise<ErrorResponse | ResponseError | ResponseBalance> {
+    return this.onePaymentService.balance(body);
   }
 }
