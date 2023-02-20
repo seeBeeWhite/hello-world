@@ -17,6 +17,8 @@
 </template>
 
 <script lang="ts">
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -27,11 +29,11 @@ export default {
   },
   methods: {
     sendPayout() {
-      this.requestString = '/one-payment/payout'
+      this.requestString = "/one-payment/payout"
       this.isPreloaderVisible = true;
       axios
         .get(this.requestString)
-        .then(this.parseResponce)
+        .then(this.parseResponse)
         .finally(() => (this.isPreloaderVisible = false));
     },
     sendStatus() {
@@ -39,7 +41,7 @@ export default {
       this.isPreloaderVisible = true;
       axios
         .get(this.requestString)
-        .then(this.parseResponce)
+        .then(this.parseResponse)
         .finally(() => (this.isPreloaderVisible = false));
     },
     sendBallance() {
@@ -47,11 +49,11 @@ export default {
       this.isPreloaderVisible = true;
       axios
         .get(this.requestString)
-        .then(this.parseResponce)
+        .then(this.parseResponse)
         .finally(() => (this.isPreloaderVisible = false));
     },
-    parseResponce(responce: any) {
-      this.message = responce.data;
+    parseResponse(response: any) {
+      this.message = response.data;
     }
   }
 }
